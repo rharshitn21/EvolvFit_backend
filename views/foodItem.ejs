@@ -1,0 +1,44 @@
+<%- include('header.ejs') -%>
+    <% if(Itemadded){ %>
+        <script>
+            alert("Item Added");
+        </script>
+    <%    } %>
+    <form method="post" action="/addfoodItem">
+        <div class="form-group">
+            <label for="name">Name of the FoodItem</label>
+            <input name="name" id="name" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="calories">Calories </label>
+            <input name="calories" id="calories" type="number" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="protien">Protien (in g)</label>
+            <input name="protien" id="protien" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="carb">Carb (in g)</label>
+            <input name="carb" id="carb" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="fat">fat (in g)</label>
+            <input name="fat" id="fat" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="units">Units</label>
+            <select class="form-control" id="units" name="units">
+                <% units.forEach((unit)=> { %>
+                    <option><%= unit %></option>
+                <% }) %>
+              </select>
+        </div>
+        <div class="form-group">
+            <label for="itemWeight">Weight (Avg weight of one Item)</label>
+            <input name="itemWeight" id="itemWeight" type="text" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-primary" type="submit">Add Item</button>
+        </div>  
+    </form> 
+<%- include('footer.ejs') -%>

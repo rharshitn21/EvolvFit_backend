@@ -1,0 +1,27 @@
+<%- include('header') -%>
+
+<form method="post" action="/addmealplan">
+    <div class="form-group">
+        <label></label>
+    </div>
+    <div class="form-group">
+        <label>Date</label>
+        <input type="Date" class="form-control">
+    </div>
+    <div class="form-group">
+        <label>Meal</label>
+        <% meals.forEach((meal)=>{ %>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="meal" value = <%= meal._id %> id="flexRadio">
+                <label class="form-check-label" for="flexRadio">
+                    <%= meal.name %>
+                </label>
+            </div>
+        <% }) %>
+    </div>
+    <div class="form-group">
+        <button class="btn btn-primary" type="submit">Add meal to the Plan</button>
+    </div>
+</form>
+
+<%- include('footer') -%>

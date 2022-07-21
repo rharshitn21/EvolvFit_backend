@@ -2,12 +2,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path'
 import mongoose from "mongoose";
+import ejs from 'ejs';
 // import units from "./acceptedUnit.js";
 
 
 const __dirname = path.resolve();
 const app = express();
 
+app.locals.ejs = ejs;
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
@@ -47,7 +49,7 @@ const userSchema = new mongoose.Schema({
     calorieRequirement: Number,
     mealPlan: [{
         date: Date,
-        mealPlan: {type: mongoose.Schema.Types.ObjectId, ref: 'Meal'}
+        meal: {type: mongoose.Schema.Types.ObjectId, ref: 'Meal'}
     }]
 });
 const User = mongoose.model("User", userSchema);
@@ -67,12 +69,11 @@ app.get("/addmeal", (req, res) => {
     });
 });
 
-app.get("/createUser", (req, res)=>{
+app.get("/createmealplan", (req, res)=>{
     Meal.find({}, (err, meals)=>{
         if(err)
             crossOriginIsolated.log(err);
         else {
-            console.log(meals);
             res.render("user", {meals: meals});
         }
     })
@@ -130,13 +131,33 @@ app.post("/addMeal", function (req, res){
     
 });
 
+
+app.get("/showmealplan", async (req, res)=>{
+    const id = "62d987151ca3165ccb3e0f17"
+    const mealPlan = await User.findOne({_id: id}).populate('mealPlan.meal');
+    console.log(mealPlan.mealPlan[0].meal);
+})
 app.post("/createUser", (req, res)=>{
 
 });
 
-app.post("/addmealplan", (req, res)=>{ 
-    
-})
+app.post("/addmealplan", (req, res)=>{
+    const id = "62d987151ca3165ccb3e0f17";
+    console.log(req.body);
+    User.findByIdAndUpdate(id, {$push: {mealPlan: {
+        date: req.body.date,
+        meal: req.body.meal
+    }}}, (err, success)=>{
+        if(err){
+            console.log(err);
+        }
+        else {
+            console.log(success);
+            res.redirect("/createmealplan");
+        }
+    });
+
+});
 
 
 

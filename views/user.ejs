@@ -2,26 +2,27 @@
 
 <form method="post" action="/addmealplan">
     <div class="form-group">
-        <label></label>
+        <label>User</label>
+        <input name="username" value="Harshit" class="form-control" disabled readonly>
     </div>
     <div class="form-group">
-        <label>Date</label>
-        <input type="Date" class="form-control">
+        <label>Calorie Requirement</label>
+        <input name="calreq" type="number" value="3000" class="form-control" disabled readonly>
     </div>
-    <div class="form-group">
-        <label>Meal</label>
-        <% meals.forEach((meal)=>{ %>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="meal" value = <%= meal._id %> id="flexRadio">
-                <label class="form-check-label" for="flexRadio">
-                    <%= meal.name %>
-                </label>
-            </div>
-        <% }) %>
+    <div class="mealsbody">
+        <%- include('mealplan') -%>
     </div>
+    <!-- <div class="form-group">
+        <button class="btn" onclick="addMealPlan()"> + Another Meal</button>
+    </div> -->
     <div class="form-group">
         <button class="btn btn-primary" type="submit">Add meal to the Plan</button>
     </div>
 </form>
-
+<!-- <script>
+    function addMealPlan() {
+        const html = ejs.render("mealpal");
+        $(".mealsbody").append(html);
+    }
+</script> -->
 <%- include('footer') -%>

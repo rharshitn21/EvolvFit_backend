@@ -1,0 +1,19 @@
+<%- include('header') -%>
+
+<h2>All Available Meals</h2>
+<% allMeals.forEach((meal)=>{ %>
+    <div class="card" style="margin: 1rem 0rem 1rem 0rem;">
+        <div class="card-header">
+            <%= meal.name %>
+            <a href="/updateMeals/<%=meal._id%>" class="card-link text-right" >Edit</a>
+        </div>
+        <ul class="list-group list-group-flush">
+            <% meal.foodItems.forEach((foodItem)=>{ %>
+                <li class="list-group-item"><%= foodItem.name %></li>
+            <% }) %>
+          </ul>
+      </div>
+<% }) %>
+
+
+<%- include('footer') -%>

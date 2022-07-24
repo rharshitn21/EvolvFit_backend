@@ -3,9 +3,9 @@ import bodyParser from 'body-parser';
 import path from 'path'
 import mongoose from "mongoose";
 import ejs from 'ejs';
-import { foodItemSchema, FoodItem, units } from './models/foodItem.js';
-import { typeOfMeal, mealSchema, Meal } from './models/meal.js';
-import { userSchema, User } from './models/user.js';
+import { FoodItem, units } from './models/foodItem.js';
+import { typeOfMeal, Meal } from './models/meal.js';
+import { User } from './models/user.js';
 
 
 const __dirname = path.resolve();
@@ -125,8 +125,54 @@ app.post("/addmealplan", (req, res)=>{
 
 });
 
+app.get("/showAllMeals", (req, res)=>{
+    Meal.find({}, (err, allMeals)=>{
+        if(err)
+            console.log(err);
+        else {
+            res.render("allMeals", {allMeals: allMeals});
+        }
+    })
+});
 
 
+app.get("/updateMeals/:mealid", (req, res)=>{
+    const id = req.params.mealid;
+    Meal.findById(id, (err, foundMeal)=>{
+        if(err){
+            console.log(err);
+        }
+        else {
+            FoodItem.find({}, async (err, foodItems)=>{
+                if(err){
+                    console.log(err);
+                }
+                else {
+                    res.render("updatemeal", {typeOfMeal: typeOfMeal, foodItems: foodItems, meal: foundMeal});
+                }
+            }); 
+        }
+    })
+});
+app.patch("/updateMeals/:mealid", (req, res)=>{
+    FoodItem.find({
+        '_id': { $in: req.body.foodItem} 
+    }, (err, embfooditem)=>{
+        if(err)
+            console.log(err);
+        else {
+            FoodItem.findOneAndUpdate({_id: req.params.mealid}, {category: req.body.typeOfMeal, foodItems: embfooditem}, (err, docs)=>{
+                if(err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(docs);
+                    res.redirect("/showAllMeals");
+                }
+            })
+        }
+    }) 
+});
 
 
 

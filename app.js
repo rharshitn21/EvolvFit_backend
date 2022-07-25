@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import path from 'path'
 import mongoose from "mongoose";
 import ejs from 'ejs';
+import methodOverride from 'method-override';
 import { FoodItem, units } from './models/foodItem.js';
 import { typeOfMeal, Meal } from './models/meal.js';
 import { User } from './models/user.js';
@@ -15,14 +16,20 @@ app.locals.ejs = ejs;
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.static("public"));
-
+app.use(methodOverride('_method'));
 
 
 mongoose.connect("mongodb://localhost:27017/mealDB");
 
 
+
+app.get("/", (req, res)=>{
+    res.render("home");
+});
+
+
 app.get("/addfoodItem", (req, res)=>{
-    res.render("fooditem", {Itemadded: false, units: units});
+    res.render("foodItem", {Itemadded: false, units: units});
 });
 
 app.get("/addmeal", (req, res) => {
@@ -49,7 +56,6 @@ app.get("/createmealplan", (req, res)=>{
 
 
 app.post("/addfooditem", (req, res)=>{
-    console.log(req.body);
     const fooditem = new FoodItem({
         name: req.body.name,
         calories: req.body.calories,
@@ -62,9 +68,9 @@ app.post("/addfooditem", (req, res)=>{
 
     fooditem.save((err)=>{
         if(err)
-            res.render("fooditem", {Itemadded: false});
+            res.render("fooditem", {Itemadded: false, units: units});
         else {
-            res.render("fooditem", {Itemadded: true});
+            res.render("fooditem", {Itemadded: true, units: units});
         }
     }); 
 });
@@ -88,7 +94,7 @@ app.post("/addMeal", function (req, res){
                         console.log(err);
                     }
                     else {
-                        res.redirect("/addMeal");
+                        res.redirect("/showAllMeals");
                     }
                 });
             }
@@ -154,6 +160,7 @@ app.get("/updateMeals/:mealid", (req, res)=>{
         }
     })
 });
+
 app.patch("/updateMeals/:mealid", (req, res)=>{
     FoodItem.find({
         '_id': { $in: req.body.foodItem} 
@@ -161,23 +168,18 @@ app.patch("/updateMeals/:mealid", (req, res)=>{
         if(err)
             console.log(err);
         else {
-            FoodItem.findOneAndUpdate({_id: req.params.mealid}, {category: req.body.typeOfMeal, foodItems: embfooditem}, (err, docs)=>{
+            console.log(req.params.mealid);
+            Meal.findOneAndUpdate({_id: req.params.mealid}, {foodItems: embfooditem}, (err, docs)=>{
                 if(err) {
                     console.log(err);
                 }
                 else {
-                    console.log(docs);
                     res.redirect("/showAllMeals");
                 }
             })
         }
     }) 
 });
-
-
-
-
-
 
 
 app.listen(3000, ()=>{

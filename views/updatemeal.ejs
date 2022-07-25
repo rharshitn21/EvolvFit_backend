@@ -1,5 +1,5 @@
 <%- include("header") -%>
-<form method="post" action="/addMeal">
+<form method="post" action="/updateMeals/<%= meal._id %>?_method=PATCH">
     <div class="form-group">
         <label for="typeOfMeal">typeOfMeal</label>
 

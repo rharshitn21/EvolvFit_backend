@@ -42,7 +42,7 @@ app.get("/addmeal", (req, res) => {
     });
 });
 
-app.get("/createmealplan", (req, res)=>{
+app.get("/addmealplan", (req, res)=>{
     Meal.find({}, (err, meals)=>{
         if(err)
             crossOriginIsolated.log(err);
@@ -107,15 +107,16 @@ app.post("/addMeal", function (req, res){
 app.get("/showmealplan", async (req, res)=>{
     const id = "62d987151ca3165ccb3e0f17"
     const mealPlan = await User.findOne({_id: id}).populate('mealPlan.meal');
-    console.log(mealPlan.mealPlan[0].meal);
-})
+    res.render("usermealplan", {mealPlan: mealPlan});
+});
+
+
 app.post("/createUser", (req, res)=>{
 
 });
 
 app.post("/addmealplan", (req, res)=>{
     const id = "62d987151ca3165ccb3e0f17";
-    console.log(req.body);
     User.findByIdAndUpdate(id, {$push: {mealPlan: {
         date: req.body.date,
         meal: req.body.meal
@@ -125,7 +126,7 @@ app.post("/addmealplan", (req, res)=>{
         }
         else {
             console.log(success);
-            res.redirect("/createmealplan");
+            res.redirect("/showmealplan");
         }
     });
 

@@ -1,0 +1,23 @@
+<%- include('header') -%>
+
+<h2>Hello, <%= mealPlan.name %></h2>
+<a href="addMealPlan"><button class="btn btn-outline-secondary">Add Meal Plan</button></a>
+<% mealPlan.mealPlan.forEach((meal)=>{ %>
+    <div class="card" style="margin: 1rem 0rem 1rem 0rem;">
+        <div class="card-header">
+            <%= meal.meal.name %>
+            <a href="/updateMeals/<%=meal._id%>" class="card-link text-right" >Edit</a>
+        </div>
+        <ul class="list-group list-group-flush">
+            <% meal.meal.foodItems.forEach((foodItem)=>{ %>
+                <li class="list-group-item"><%= foodItem.name %></li>
+            <% }) %>
+          </ul>
+          <div class="card-footer">
+            <%= "For: " + meal.date.getDate() + "-" + (meal.date.getMonth() + 1) + "-"+ meal.date.getFullYear() + " " + meal.meal.category%>
+          </div>
+      </div>
+      
+<% }) %>
+
+<%- include('footer') -%>

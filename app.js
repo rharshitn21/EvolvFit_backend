@@ -105,7 +105,7 @@ app.post("/addMeal", function (req, res){
 
 
 app.get("/showmealplan", async (req, res)=>{
-    const id = "62d987151ca3165ccb3e0f17"
+    const id = "62de41b4ab4d5c525b579cdd"
     const mealPlan = await User.findOne({_id: id}).populate('mealPlan.meal');
     res.render("usermealplan", {mealPlan: mealPlan});
 });
@@ -115,8 +115,8 @@ app.post("/createUser", (req, res)=>{
 
 });
 
-app.post("/addmealplan", (req, res)=>{
-    const id = "62d987151ca3165ccb3e0f17";
+app.patch("/addmealplan", (req, res)=>{
+    const id = "62de41b4ab4d5c525b579cdd";
     User.findByIdAndUpdate(id, {$push: {mealPlan: {
         date: req.body.date,
         meal: req.body.meal

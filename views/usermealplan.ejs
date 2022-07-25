@@ -1,7 +1,7 @@
 <%- include('header') -%>
 
 <h2>Hello, <%= mealPlan.name %></h2>
-<a href="addMealPlan"><button class="btn btn-outline-secondary">Add Meal Plan</button></a>
+<a href="/addMealPlan"><button class="btn btn-outline-secondary">Add Meal Plan</button></a>
 <% mealPlan.mealPlan.forEach((meal)=>{ %>
     <div class="card" style="margin: 1rem 0rem 1rem 0rem;">
         <div class="card-header">

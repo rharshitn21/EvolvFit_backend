@@ -1,13 +1,13 @@
 <%- include('header') -%>
 
-<form method="post" action="/addmealplan">
+<form method="post" action="/addmealplan?_method=PATCH">
     <div class="form-group">
         <label>User</label>
         <input name="username" value="Harshit" class="form-control" disabled readonly>
     </div>
     <div class="form-group">
         <label>Calorie Requirement</label>
-        <input name="calreq" type="number" value="3000" class="form-control" disabled readonly>
+        <input name="calreq" type="number" value="2000" class="form-control" disabled readonly>
     </div>
     <div class="mealsbody">
         <%- include('mealplan') -%>

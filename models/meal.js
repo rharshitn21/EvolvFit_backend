@@ -9,6 +9,9 @@ export const mealSchema = new mongoose.Schema({
         enum:typeOfMeal,
     },
     name: String,
-    foodItems: [foodItemSchema]
+    foodItems: [{
+        foodItem: foodItemSchema,
+        quantity: Number
+    }]
 });
 export const Meal = mongoose.model("Meal", mealSchema);

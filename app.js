@@ -76,17 +76,23 @@ app.post("/addfooditem", (req, res)=>{
 });
 
 app.post("/addMeal", function (req, res){
+
+    console.log(req.body);
     if(req.body.foodItem) {
         FoodItem.find({
             '_id': { $in: req.body.foodItem} 
-        }, (err, embfooditem)=>{
+        }, async (err, embfooditem)=>{
             if(err)
                 console.log(err);
             else {
+                const quantity = await req.body.quantity.filter((x) => x != 0);
+                const listOfItems = await embfooditem.map((x, i) => {
+                    return {foodItem: x, quantity: quantity[i]};
+                });
                 const meal = new Meal({
                     category: req.body.typeOfMeal,
                     name: req.body.name,
-                    foodItems: embfooditem
+                    foodItems: listOfItems
                 });
 
                 meal.save((err)=>{
@@ -165,12 +171,15 @@ app.get("/updateMeals/:mealid", (req, res)=>{
 app.patch("/updateMeals/:mealid", (req, res)=>{
     FoodItem.find({
         '_id': { $in: req.body.foodItem} 
-    }, (err, embfooditem)=>{
+    }, async (err, embfooditem)=>{
         if(err)
             console.log(err);
         else {
-            console.log(req.params.mealid);
-            Meal.findOneAndUpdate({_id: req.params.mealid}, {foodItems: embfooditem}, (err, docs)=>{
+            const quantity = await req.body.quantity.filter((x) => x != 0);
+            const listOfItems = await embfooditem.map((x, i) => {
+                    return {foodItem: x, quantity: quantity[i]};
+            });
+            Meal.findOneAndUpdate({_id: req.params.mealid}, {foodItems: listOfItems}, (err, docs)=>{
                 if(err) {
                     console.log(err);
                 }
